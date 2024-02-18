@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String         @id @default(uuid())
+  email            String         @unique
+  password         String
+  name             String?
+  roles            Role[]
+  bids             Bid[]
+  applications     Application[]
+  sentMessages     Message[]      @relation("MessageSender")
+  receivedMessages Message[]      @relation("MessageReceiver")
+  authoredReviews  Review[]       @relation("ReviewAuthor")
+  subjectReviews   Review[]       @relation("ReviewSubject")
+  Notification     Notification[]
+}
+
+model Role {
+  id    String @id @default(uuid())
+  name  String
+  users User[]
+}
+
+model Bid {
+  id           String        @id @default(uuid())
+  title        String
+  description  String
+  status       BidStatus
+  issuerId     String
+  issuer       User          @relation(fields: [issuerId], references: [id])
+  applications Application[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Application {
+  id        String    @id @default(uuid())
+  bidId     String
+  vendorId  String
+  bid       Bid       @relation(fields: [bidId], references: [id])
+  vendor    User      @relation(fields: [vendorId], references: [id])
+  status    AppStatus
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  content    String
+  senderId   String
+  receiverId String
+  sender     User     @relation("MessageSender", fields: [senderId], references: [id])
+  receiver   User     @relation("MessageReceiver", fields: [receiverId], references: [id])
+  createdAt  DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  content   String
+  rating    Int
+  authorId  String
+  subjectId String
+  author    User     @relation("ReviewAuthor", fields: [authorId], references: [id])
+  subject   User     @relation("ReviewSubject", fields: [subjectId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  content   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+enum BidStatus {
+  OPEN
+  CLOSED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum AppStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
