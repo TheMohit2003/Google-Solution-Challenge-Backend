@@ -1,18 +1,31 @@
 {
-  "name": "google-solution-challenge-backend",
-  "version": "1.0.0",
-  "description": "## Introduction",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@prisma/client": "^5.9.1",
-    "express": "^4.18.2"
-  },
-  "devDependencies": {
-    "prisma": "^5.9.1"
-  }
+    "name": "google-solution-challenge-backend",
+    "version": "1.0.0",
+    "description": "## Introduction",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest",
+        "prepare": "husky",
+        "format": "prettier --write .",
+        "lint": "prettier --check .",
+        "dev": "nodemon index.js",
+        "start": "node index.js"
+    },
+    "lint-staged": {
+        "**/*": "prettier --write --ignore-unknown"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@prisma/client": "^5.9.1",
+        "express": "^4.18.2"
+    },
+    "devDependencies": {
+        "husky": "^9.0.11",
+        "jest": "^29.7.0",
+        "lint-staged": "^15.2.2",
+        "prettier": "3.2.5",
+        "prisma": "^5.9.1",
+        "supertest": "^6.3.4"
+    }
 }
