@@ -1,0 +1,18 @@
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Matches all files
+[*.{js,jsx,ts,tsx,json,html,css,scss,md}]
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+# Matches only JavaScript and TypeScript files
+[*.{js,jsx,ts,tsx}]
+quote_type = single
+semi = true
