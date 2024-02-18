@@ -1,12 +1,9 @@
-const express = require('express');
-const app = express();
+const app = require('./app');
 
 const port = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-    res.send('Hey , this is the get api.');
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
+}
