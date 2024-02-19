@@ -1,5 +1,5 @@
 const supertest = require('supertest');
-const app = require('../app'); // Ensure this path matches your app's structure
+const app = require('../app');
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcrypt');
 const prisma = new PrismaClient();
@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 const request = supertest(app);
 
 describe('Authentication Controller Tests', () => {
-    // Clean up: ideally, you want to clear your test users after the test suite runs
     afterAll(async () => {
         await prisma.user.deleteMany({
             where: {
