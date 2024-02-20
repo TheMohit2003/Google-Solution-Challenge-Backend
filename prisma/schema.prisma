@@ -7,51 +7,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  role      UserRole @default(ISSUER)
-  createdAt DateTime @default(now())
-}
-
-// model ISSUER {
-//   id               String     @id @default(uuid())
-//   name             String
-//   contact          Int
-//   aadhar           String
-//   GST              Int
-//   OrganizationName String
-//   Issuertype       Issuertype @default(INDIVIDUAL)
-//   createdAt        DateTime   @default(now())
-// }
-
-// model VENDOR {
-//   id               String   @id @default(uuid())
-//   name             String
-//   officeaddress    String
-//   contact          Int
-//   aadhar           String
-//   GST              Int
-//   OrganizationName String
-//   WorkDescription  String
-//   createdAt        DateTime @default(now())
-// }
-
-// model Bid {
-//   id        String   @id @default(uuid())
-//   vendorid  String
-//   issuerid  String
-//   amount    Int
-//   createdAt DateTime @default(now())
-// }
-
-enum UserRole {
+enum Role {
   ISSUER
   VENDOR
 }
 
-enum Issuertype {
+enum IssuerType {
   INDIVIDUAL
-  COMPANY
+  COMPANY // Add other types as needed
+}
+
+enum ServiceStatus {
+  OPEN
+  CLOSED
+  LIVE
+}
+
+enum BidStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role
+  issuer    Issuer?
+  vendor    Vendor?
+  createdAt DateTime @default(now())
+}
+
+model Issuer {
+  userId           String      @id
+  name             String
+  contact          Int
+  aadhar           String
+  GST              Int
+  OrganizationName String
+  IssuerType       IssuerType
+  createdAt        DateTime    @default(now())
+  services         Service[]
+  user             User        @relation(fields: [userId], references: [id])
+}
+
+model Vendor {
+  userId           String      @id
+  name             String
+  officeAddress    String
+  contact          Int
+  aadhar           String
+  GST              Int
+  OrganizationName String
+  WorkDescription  String
+  createdAt        DateTime    @default(now())
+  bids             Bid[]
+  user             User        @relation(fields: [userId], references: [id])
+}
+
+model Service {
+  id          String        @id @default(uuid())
+  issuerId    String
+  title       String
+  description String
+  status      ServiceStatus @default(OPEN)
+  createdAt   DateTime      @default(now())
+  bids        Bid[]
+  issuer      Issuer        @relation(fields: [issuerId], references: [userId])
+}
+
+model Bid {
+  id         String       @id @default(uuid())
+  serviceId  String
+  vendorId   String
+  amount     Float
+  message    String?
+  status     BidStatus    @default(PENDING)
+  createdAt  DateTime     @default(now())
+  service    Service      @relation(fields: [serviceId], references: [id])
+  vendor     Vendor       @relation(fields: [vendorId], references: [userId])
 }
