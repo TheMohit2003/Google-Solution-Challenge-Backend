@@ -18,6 +18,5 @@ model User {
 
 enum UserRole {
   ISSUER
-  CONTRACTOR
+  VENDOR
 }
-
