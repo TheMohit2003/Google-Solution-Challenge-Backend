@@ -15,7 +15,6 @@ const register = async (req, res) => {
     try {
         const user = await prisma.user.create({
             data: {
-                name,
                 email,
                 password: hashedPassword,
                 role,
@@ -37,13 +36,14 @@ const register = async (req, res) => {
  */
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password)
+    const { email, password, role } = req.body;
+    if (!email || !password || !role)
         return res.status(400).json({ error: 'Invalid email or password' });
 
     const user = await prisma.user.findUnique({
         where: {
             email,
+            role,
         },
     });
 

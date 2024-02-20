@@ -19,7 +19,6 @@ describe('Authentication Controller Tests', () => {
     describe('POST /auth/register', () => {
         it('successfully registers a new user and returns a JWT token', async () => {
             const userData = {
-                name: 'Test User',
                 email: 'newuser@example.com',
                 password: 'password',
                 role: 'ISSUER',
@@ -34,7 +33,6 @@ describe('Authentication Controller Tests', () => {
 
         it('fails to register a user with an existing email', async () => {
             const userData = {
-                name: 'Test User',
                 email: 'newuser@example.com',
                 password: 'password',
                 role: 'ISSUER',
@@ -53,6 +51,7 @@ describe('Authentication Controller Tests', () => {
             const userData = {
                 email: 'newuser@example.com',
                 password: 'password',
+                role: 'ISSUER',
             };
 
             const response = await request.post('/auth/login').send(userData);
@@ -64,6 +63,7 @@ describe('Authentication Controller Tests', () => {
             const userData = {
                 email: 'newuser@example.com',
                 password: 'wrongpassword',
+                role: 'ISSUER',
             };
 
             const response = await request.post('/auth/login').send(userData);
@@ -75,6 +75,7 @@ describe('Authentication Controller Tests', () => {
             const userData = {
                 email: 'nonexisting@example.com',
                 password: 'password',
+                role: 'ISSUER',
             };
 
             const response = await request.post('/auth/login').send(userData);

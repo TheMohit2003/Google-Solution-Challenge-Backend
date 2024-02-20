@@ -11,12 +11,47 @@ model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
-  name      String?
   role      UserRole @default(ISSUER)
   createdAt DateTime @default(now())
 }
 
+// model ISSUER {
+//   id               String     @id @default(uuid())
+//   name             String
+//   contact          Int
+//   aadhar           String
+//   GST              Int
+//   OrganizationName String
+//   Issuertype       Issuertype @default(INDIVIDUAL)
+//   createdAt        DateTime   @default(now())
+// }
+
+// model VENDOR {
+//   id               String   @id @default(uuid())
+//   name             String
+//   officeaddress    String
+//   contact          Int
+//   aadhar           String
+//   GST              Int
+//   OrganizationName String
+//   WorkDescription  String
+//   createdAt        DateTime @default(now())
+// }
+
+// model Bid {
+//   id        String   @id @default(uuid())
+//   vendorid  String
+//   issuerid  String
+//   amount    Int
+//   createdAt DateTime @default(now())
+// }
+
 enum UserRole {
   ISSUER
   VENDOR
+}
+
+enum Issuertype {
+  INDIVIDUAL
+  COMPANY
 }
