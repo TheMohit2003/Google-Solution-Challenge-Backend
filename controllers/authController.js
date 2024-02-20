@@ -10,7 +10,19 @@ const JWT_SECRET = process.env.JWT_SECRET;
  */
 
 const register = async (req, res) => {
-    const { name, email, password, role } = req.body;
+    const { email, password, role } = req.body;
+    if (!email || !password || !role)
+        return res.status(400).json({ error: 'Invalid data' });
+
+    const userExists = await prisma.user.findUnique({
+        where: {
+            email,
+            role,
+        },
+    });
+    if (userExists) {
+        return res.status(400).json({ error: 'User already exists' });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
         const user = await prisma.user.create({
@@ -27,7 +39,7 @@ const register = async (req, res) => {
         );
         res.status(201).json({ token });
     } catch (error) {
-        res.status(400).json({ error: 'Invalid data' });
+        res.status(400).json({ error: 'Invalid data', message: error.message });
     }
 };
 /**
@@ -55,7 +67,7 @@ const login = async (req, res) => {
         return res.status(400).json({ error: 'Invalid email or password' });
     }
     const token = jsonwebtoken.sign(
-        { userId: user.id, email: user.email },
+        { userId: user.id, email: user.email, role: user.role },
         JWT_SECRET,
         { expiresIn: '1h' }
     );
