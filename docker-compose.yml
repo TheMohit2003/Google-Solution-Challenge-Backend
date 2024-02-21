@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+    app:
+        build: .
+        ports:
+            - '3000:3000'
+        environment:
+            NODE_ENV: production
+            DATABASE_URL: yourDatabaseConnectionString
+            JWT_SECRET: yourJWTSecretKey
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        command: npm start
