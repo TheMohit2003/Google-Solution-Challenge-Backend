@@ -2,25 +2,39 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const createIssue = async (req, res) => {
-    // Simulate creating a new issuer profile
     const userId = req.body.userId;
+    console.log('userId', userId);
+
     try {
+        // Check if an issuer with the given userId already exists
+        const existingIssuer = await prisma.issuer.findUnique({
+            where: { userId },
+        });
+
+        if (existingIssuer) {
+            return res.status(409).json({ message: 'Issuer already exists' });
+        }
+
         const { name, contact, aadhar, OrganizationName, GST, IssuerType } =
             req.body;
         const issuer = await prisma.issuer.create({
-            data: name,
-            contact,
-            aadhar,
-            OrganizationName,
-            GST,
-            IssuerType,
-            userId,
+            data: {
+                name,
+                contact,
+                aadhar,
+                OrganizationName,
+                GST,
+                IssuerType,
+                userId,
+            },
         });
+
         res.status(201).json(issuer);
     } catch (error) {
+        console.error('Error creating issuer profile', error);
         res.status(400).json({
             message: 'Error creating issuer profile',
-            error,
+            error: error.message,
         });
     }
 };
