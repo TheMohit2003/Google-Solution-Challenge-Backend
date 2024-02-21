@@ -42,14 +42,14 @@ model User {
 model Issuer {
   userId           String      @id
   name             String
-  contact          Int
-  aadhar           String
-  GST              Int
-  OrganizationName String
+  contact          Int?
+  aadhar           String?
+  GST              Int?
+  OrganizationName String?
   IssuerType       IssuerType
   createdAt        DateTime    @default(now())
   services         Service[]
-  user             User        @relation(fields: [userId], references: [id])
+  user             User?        @relation(fields: [userId], references: [id])
 }
 
 model Vendor {

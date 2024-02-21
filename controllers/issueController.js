@@ -17,6 +17,7 @@ const createIssue = async (req, res) => {
 
         const { name, contact, aadhar, OrganizationName, GST, IssuerType } =
             req.body;
+        // Create the issuer with the provided details and connect it to the user by userId
         const issuer = await prisma.issuer.create({
             data: {
                 name,
@@ -25,7 +26,12 @@ const createIssue = async (req, res) => {
                 OrganizationName,
                 GST,
                 IssuerType,
-                userId,
+                user: {
+                    // Correctly establish the relation to User
+                    connect: {
+                        id: userId, // Connect this issuer to the existing user by ID
+                    },
+                },
             },
         });
 
