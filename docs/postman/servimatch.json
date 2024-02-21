@@ -1,0 +1,177 @@
+{
+    "info": {
+        "name": "API Collection",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Register User",
+            "request": {
+                "method": "POST",
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password\",\n    \"role\": \"VENDOR\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": "{{baseUrl}}/auth/register"
+            }
+        },
+        {
+            "name": "Login User",
+            "request": {
+                "method": "POST",
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": "{{baseUrl}}/auth/login"
+            }
+        },
+        {
+            "name": "Create Vendor Profile",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "x-access-token",
+                        "value": "{{userToken}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"Vendor Name\",\n    \"officeAddress\": \"123 Vendor St\",\n    \"contact\": 1234567890,\n    \"aadhar\": \"AADHAR1234\",\n    \"GST\": 123456,\n    \"OrganizationName\": \"Vendor Org\",\n    \"WorkDescription\": \"Description\"\n}"
+                },
+                "url": "{{baseUrl}}/vendor"
+            }
+        },
+        {
+            "name": "Get Vendor Profile Details",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "x-access-token",
+                        "value": "{{userToken}}"
+                    }
+                ],
+                "url": "{{baseUrl}}/vendor/{{vendorId}}"
+            }
+        },
+        {
+            "name": "Create Issuer Profile",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "x-access-token",
+                        "value": "{{userToken}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"Issuer Name\",\n    \"contact\": 1234567890,\n    \"aadhar\": \"AADHAR5678\",\n    \"GST\": 654321,\n    \"OrganizationName\": \"Issuer Org\",\n    \"IssuerType\": \"INDIVIDUAL\"\n}"
+                },
+                "url": "{{baseUrl}}/issuer"
+            }
+        },
+        {
+            "name": "Get Issuer Profile Details",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "x-access-token",
+                        "value": "{{userToken}}"
+                    }
+                ],
+                "url": "{{baseUrl}}/issuer/{{issuerId}}"
+            }
+        },
+        {
+            "name": "Create Service Request",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "x-access-token",
+                        "value": "{{userToken}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"title\": \"Test Service\",\n    \"description\": \"This is a test service\",\n    \"status\": \"OPEN\"\n}"
+                },
+                "url": "{{baseUrl}}/services"
+            }
+        },
+        {
+            "name": "List All Services",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "x-access-token",
+                        "value": "{{userToken}}"
+                    }
+                ],
+                "url": "{{baseUrl}}/services"
+            }
+        },
+        {
+            "name": "Update Service Status",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "x-access-token",
+                        "value": "{{userToken}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"status\": \"CLOSED\"\n}"
+                },
+                "url": "{{baseUrl}}/services/{{serviceId}}/status"
+            }
+        },
+        {
+            "name": "Place a Bid on a Service",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "x-access-token",
+                        "value": "{{userToken}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"serviceId\": \"{{serviceId}}\",\n    \"amount\": 500,\n    \"message\": \"Test bid message\"\n}"
+                },
+                "url": "{{baseUrl}}/bids"
+            }
+        },
+        {
+            "name": "List All Bids by a Vendor",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "x-access-token",
+                        "value": "{{userToken}}"
+                    }
+                ],
+                "url": "{{baseUrl}}/bids/vendor/{{vendorId}}"
+            }
+        }
+    ]
+}
