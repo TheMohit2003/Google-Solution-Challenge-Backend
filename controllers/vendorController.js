@@ -63,6 +63,12 @@ const getVendorDetails = async (req, res) => {
         const vendor = await prisma.vendor.findUnique({
             where: { userId: userId },
         });
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+        });
+        if (user) {
+            vendor.email = user.email;
+        }
         if (vendor) {
             console.log(vendor);
             res.status(200).json(vendor);

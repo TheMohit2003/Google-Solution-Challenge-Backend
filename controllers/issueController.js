@@ -52,6 +52,14 @@ const getIssueDetails = async (req, res) => {
         const issuer = await prisma.issuer.findUnique({
             where: { userId: userId },
         });
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+        });
+
+        if (user) {
+            issuer.gmail = user.gmail;
+        }
+
         if (issuer) {
             res.status(200).json(issuer);
         } else {
