@@ -35,7 +35,7 @@ const register = async (req, res) => {
         const token = jsonwebtoken.sign(
             { userId: user.id, email: user.email },
             JWT_SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '6h' }
         );
         res.status(201).json({ token });
     } catch (error) {
@@ -69,7 +69,7 @@ const login = async (req, res) => {
     const token = jsonwebtoken.sign(
         { userId: user.id, email: user.email, role: user.role },
         JWT_SECRET,
-        { expiresIn: '1h' }
+        { expiresIn: '6h' }
     );
     res.status(200).json({ token });
 };
