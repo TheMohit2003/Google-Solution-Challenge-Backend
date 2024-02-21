@@ -2,7 +2,17 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 // Create a new vendor profile
-exports.createVendor = async (req, res) => {
+const createVendor = async (req, res) => {
+    const userId = req.body.userId;
+    const checkUser = await prisma.vendor.findUnique({
+        where: { userId },
+    });
+    if (checkUser) {
+        return res.status(409).json({
+            message: 'Vendor already exists',
+        });
+    }
+
     try {
         const {
             name,
@@ -12,9 +22,21 @@ exports.createVendor = async (req, res) => {
             GST,
             OrganizationName,
             WorkDescription,
+            userId,
         } = req.body;
+        console.log({
+            name,
+            officeAddress,
+            contact,
+            aadhar,
+            GST,
+            OrganizationName,
+            WorkDescription,
+            userId,
+        });
         const vendor = await prisma.vendor.create({
             data: {
+                userId,
                 name,
                 officeAddress,
                 contact,
@@ -24,6 +46,7 @@ exports.createVendor = async (req, res) => {
                 WorkDescription,
             },
         });
+        console.log(vendor);
         res.status(201).json(vendor);
     } catch (error) {
         res.status(400).json({ message: 'Error creating vendor', error });
@@ -31,15 +54,17 @@ exports.createVendor = async (req, res) => {
 };
 
 // Get vendor profile details
-exports.getVendorDetails = async (req, res) => {
+const getVendorDetails = async (req, res) => {
+    const userId = req.body.userId;
     try {
-        const { userId } = req.params;
         const vendor = await prisma.vendor.findUnique({
-            where: { id: userId },
+            where: { userId: userId },
         });
         if (vendor) {
+            console.log(vendor);
             res.status(200).json(vendor);
         } else {
+            console.log('Vendor not found');
             res.status(404).json({ message: 'Vendor not found' });
         }
     } catch (error) {
@@ -51,7 +76,7 @@ exports.getVendorDetails = async (req, res) => {
 };
 
 // Place a bid on a service
-exports.placeBid = async (req, res) => {
+const placeBid = async (req, res) => {
     try {
         const { serviceId, vendorId, amount, message } = req.body;
         const bid = await prisma.bid.create({
@@ -69,7 +94,7 @@ exports.placeBid = async (req, res) => {
 };
 
 // List all bids by a vendor
-exports.listBidsByVendor = async (req, res) => {
+const listBidsByVendor = async (req, res) => {
     try {
         const { vendorId } = req.params;
         const bids = await prisma.bid.findMany({
@@ -82,7 +107,7 @@ exports.listBidsByVendor = async (req, res) => {
 };
 
 // Get the feed of services for vendors to bid on
-exports.getServicesFeed = async (req, res) => {
+const getServicesFeed = async (req, res) => {
     try {
         const services = await prisma.service.findMany({
             where: {
@@ -96,4 +121,12 @@ exports.getServicesFeed = async (req, res) => {
             error,
         });
     }
+};
+
+module.exports = {
+    createVendor,
+    getVendorDetails,
+    placeBid,
+    listBidsByVendor,
+    getServicesFeed,
 };

@@ -19,7 +19,7 @@ const {
 router.post('/', createVendor);
 
 // Get vendor profile details
-router.get('/:userId', getVendorDetails);
+router.get('/', getVendorDetails);
 
 // Place a bid on a service
 router.post('/bids', placeBid);

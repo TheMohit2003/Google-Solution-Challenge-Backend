@@ -5,6 +5,7 @@ const authRoutes = require('./routes/users');
 const vendorRoutes = require('./routes/vendor');
 const bidsRoutes = require('./routes/bidding');
 const issuersRoutes = require('./routes/issuer');
+const serviceRoutes = require('./routes/service');
 const { isAuthenticated } = require('./middlewares/auth');
 
 app.use(cors());
@@ -22,6 +23,8 @@ app.use('/vendor', isAuthenticated, vendorRoutes);
 app.use('/bids', isAuthenticated, bidsRoutes);
 
 app.use('/issuers', isAuthenticated, issuersRoutes);
+
+app.use('/service', isAuthenticated, serviceRoutes);
 
 app.use('*', (req, res) => {
     res.status(404).json({

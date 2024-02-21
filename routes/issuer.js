@@ -12,7 +12,7 @@ const {
 router.post('/', createIssue);
 
 // Get issue details
-router.get('/:issueId', getIssueDetails);
+router.get('/getIssuerDetail', getIssueDetails);
 
 // Update an issue status
 router.put('/:issueId/status', updateIssueStatus);

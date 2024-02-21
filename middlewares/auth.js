@@ -30,10 +30,11 @@ async function isAuthenticated(req, res, next) {
         }
 
         console.log(`User ${userId} is authenticated`);
-
+        req.body.userId = userId;
         next();
     } catch (error) {
         if (error instanceof jwt.JsonWebTokenError) {
+            console.error('Error verifying token:', error);
             return res.status(401).json({ message: 'Invalid token' });
         }
         console.error('Error verifying token:', error);
