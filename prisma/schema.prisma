@@ -61,6 +61,7 @@ model Vendor {
   GST              Int
   OrganizationName String
   WorkDescription  String
+  Occupation       String      @default("Service Provider")
   createdAt        DateTime    @default(now())
   bids             Bid[]
   user             User        @relation(fields: [userId], references: [id])

@@ -20,6 +20,7 @@ const createVendor = async (req, res) => {
             contact,
             aadhar,
             GST,
+            Occupation,
             OrganizationName,
             WorkDescription,
             userId,
@@ -31,6 +32,7 @@ const createVendor = async (req, res) => {
             aadhar,
             GST,
             OrganizationName,
+            Occupation,
             WorkDescription,
             userId,
         });
@@ -42,6 +44,7 @@ const createVendor = async (req, res) => {
                 contact,
                 aadhar,
                 GST,
+                Occupation,
                 OrganizationName,
                 WorkDescription,
             },
