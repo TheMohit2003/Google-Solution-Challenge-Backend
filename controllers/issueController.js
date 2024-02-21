@@ -47,7 +47,7 @@ const createIssue = async (req, res) => {
 
 const getIssueDetails = async (req, res) => {
     // Simulate fetching issuer details
-    userId = req.body.userId;
+    const userId = req.body.userId;
     try {
         const issuer = await prisma.issuer.findUnique({
             where: { userId: userId },
