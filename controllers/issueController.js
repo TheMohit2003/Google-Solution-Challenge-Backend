@@ -3,9 +3,18 @@ const prisma = new PrismaClient();
 
 const createIssue = async (req, res) => {
     // Simulate creating a new issuer profile
+    const userId = req.body.userId;
     try {
+        const { name, contact, aadhar, OrganizationName, GST, IssuerType } =
+            req.body;
         const issuer = await prisma.issuer.create({
-            data: req.body,
+            data: name,
+            contact,
+            aadhar,
+            OrganizationName,
+            GST,
+            IssuerType,
+            userId,
         });
         res.status(201).json(issuer);
     } catch (error) {
