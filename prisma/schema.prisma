@@ -40,20 +40,20 @@ model User {
 }
 
 model Issuer {
-  userId           String      @id
+  userId           String     @id
   name             String
   contact          Int?
   aadhar           String?
   GST              Int?
   OrganizationName String?
   IssuerType       IssuerType
-  createdAt        DateTime    @default(now())
+  createdAt        DateTime   @default(now())
   services         Service[]
-  user             User?        @relation(fields: [userId], references: [id])
+  user             User?      @relation(fields: [userId], references: [id])
 }
 
 model Vendor {
-  userId           String      @id
+  userId           String   @id
   name             String
   officeAddress    String
   contact          Int
@@ -61,31 +61,36 @@ model Vendor {
   GST              Int
   OrganizationName String
   WorkDescription  String
-  Occupation       String      @default("Service Provider")
-  createdAt        DateTime    @default(now())
+  Occupation       String   @default("Service Provider")
+  createdAt        DateTime @default(now())
   bids             Bid[]
-  user             User        @relation(fields: [userId], references: [id])
+  user             User     @relation(fields: [userId], references: [id])
 }
 
 model Service {
-  id          String        @id @default(uuid())
-  issuerId    String
-  title       String
-  description String
-  status      ServiceStatus @default(OPEN)
-  createdAt   DateTime      @default(now())
-  bids        Bid[]
-  issuer      Issuer        @relation(fields: [issuerId], references: [userId])
+  id               String        @id @default(uuid())
+  issuerId         String
+  title            String
+  amount           Int
+  location         String
+  //attachment
+  biddingDate      DateTime
+  projectStartDate DateTime
+  description      String
+  status           ServiceStatus @default(OPEN)
+  createdAt        DateTime      @default(now())
+  bids             Bid[]
+  issuer           Issuer        @relation(fields: [issuerId], references: [userId])
 }
 
 model Bid {
-  id         String       @id @default(uuid())
-  serviceId  String
-  vendorId   String
-  amount     Float
-  message    String?
-  status     BidStatus    @default(PENDING)
-  createdAt  DateTime     @default(now())
-  service    Service      @relation(fields: [serviceId], references: [id])
-  vendor     Vendor       @relation(fields: [vendorId], references: [userId])
+  id        String    @id @default(uuid())
+  serviceId String
+  vendorId  String
+  amount    Float
+  message   String?
+  status    BidStatus @default(PENDING)
+  createdAt DateTime  @default(now())
+  service   Service   @relation(fields: [serviceId], references: [id])
+  vendor    Vendor    @relation(fields: [vendorId], references: [userId])
 }
