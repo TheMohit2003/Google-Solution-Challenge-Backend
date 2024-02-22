@@ -2,6 +2,8 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const createService = async (req, res) => {
+    const userId = req.body.userId;
+    console.log(`userId at createService: ${userId}`);
     const {
         title,
         description,
@@ -10,7 +12,6 @@ const createService = async (req, res) => {
         biddingDate,
         projectStartDate,
     } = req.body;
-    const userId = req.userId; // Assuming req.userId is populated by your authentication middleware
 
     try {
         // Additional check to ensure the user is an issuer could be implemented here
