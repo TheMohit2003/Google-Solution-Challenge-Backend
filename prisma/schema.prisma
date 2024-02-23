@@ -81,6 +81,7 @@ model Service {
   createdAt        DateTime      @default(now())
   bids             Bid[]
   issuer           Issuer        @relation(fields: [issuerId], references: [userId])
+  filePath         String?
 }
 
 model Bid {
