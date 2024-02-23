@@ -73,11 +73,23 @@ const getServiceById = async (req, res) => {
         const service = await prisma.service.findUnique({
             where: { id },
         });
+        const issuer = await prisma.issuer.findUnique({
+            where: { id: service.issuerId },
+        });
+
         if (!service) {
             return res.status(404).json({
                 message: 'Service not found',
             });
         }
+        if (!issuer) {
+            return res.status(404).json({
+                message: 'Issuer not found',
+            });
+        }
+
+        service.issuer = issuer;
+
         res.status(200).json({
             service,
         });
