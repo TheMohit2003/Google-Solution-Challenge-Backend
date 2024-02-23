@@ -89,4 +89,33 @@ const getServiceById = async (req, res) => {
     }
 };
 
-module.exports = { createService, getAllServices, getServiceById };
+// params : issuer id
+// response : all service created by issuer
+
+const getAllServicesByIssuer = async (req, res) => {
+    // Simulate fetching issuer details
+    const issuerId = req.params.id;
+    try {
+        const services = await prisma.service.findMany({
+            where: { issuerId: issuerId },
+        });
+
+        if (services) {
+            res.status(200).json(services);
+        } else {
+            res.status(404).json({ message: 'Service not found' });
+        }
+    } catch (error) {
+        res.status(400).json({
+            message: 'Error fetching service details',
+            error,
+        });
+    }
+};
+
+module.exports = {
+    createService,
+    getAllServices,
+    getServiceById,
+    getAllServicesByIssuer,
+};

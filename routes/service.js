@@ -4,6 +4,7 @@ const {
     createService,
     getAllServices,
     getServiceById,
+    getAllServicesByIssuer,
 } = require('../controllers/service');
 
 router.post('/createService', createService);
@@ -11,5 +12,7 @@ router.post('/createService', createService);
 router.get('/getAllServices', getAllServices);
 
 router.get('/getServiceById/:id', getServiceById);
+
+router.get('/getAllServicesByIssuer/:id', getAllServicesByIssuer);
 
 module.exports = router;
