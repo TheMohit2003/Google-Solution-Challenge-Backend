@@ -13,6 +13,6 @@ router.get('/getAllServices', getAllServices);
 
 router.get('/getServiceById/:id', getServiceById);
 
-router.get('/getAllServicesByIssuer/:id', getAllServicesByIssuer);
+router.get('/getAllServicesByIssuer', getAllServicesByIssuer);
 
 module.exports = router;

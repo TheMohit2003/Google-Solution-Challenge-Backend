@@ -94,7 +94,9 @@ const getServiceById = async (req, res) => {
 
 const getAllServicesByIssuer = async (req, res) => {
     // Simulate fetching issuer details
-    const issuerId = req.params.id;
+    // const issuerId = req.params.id;
+    const issuerId = req.body.userId;
+
     try {
         const services = await prisma.service.findMany({
             where: { issuerId: issuerId },
