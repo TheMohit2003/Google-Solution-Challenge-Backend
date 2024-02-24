@@ -132,10 +132,88 @@ const getServicesFeed = async (req, res) => {
     }
 };
 
+// Express interest in a service
+const expressInterest = async (req, res) => {
+    const { serviceId } = req.body;
+    const vendorId = req.body.userId;
+
+    console.log(
+        `Expressing interest for serviceId: ${serviceId} by vendorId: ${vendorId}`
+    );
+
+    try {
+        const existingInterest = await prisma.vendorInterest.findFirst({
+            where: {
+                serviceId,
+                vendorId,
+            },
+        });
+
+        if (existingInterest) {
+            console.log('Interest already expressed');
+            return res
+                .status(409)
+                .json({ message: 'Interest already expressed' });
+        }
+
+        const interest = await prisma.vendorInterest.create({
+            data: {
+                vendorId,
+                serviceId,
+            },
+        });
+
+        console.log(
+            `Interest expressed successfully: ${JSON.stringify(interest)}`
+        );
+        res.status(201).json({
+            message: 'Interest expressed successfully',
+            interest,
+        });
+    } catch (error) {
+        console.error('Error expressing interest', error);
+        res.status(500).json({
+            message: 'Internal server error',
+            error: error.message,
+        });
+    }
+};
+
+// List all services a vendor is interested in
+const listInterestedServices = async (req, res) => {
+    const vendorId = req.body.userId;
+
+    console.log(`Listing all interested services for vendorId: ${vendorId}`);
+
+    try {
+        const interests = await prisma.vendorInterest.findMany({
+            where: {
+                vendorId,
+            },
+            include: {
+                service: true,
+            },
+        });
+
+        console.log(
+            `Found ${interests.length} interested services for vendorId: ${vendorId}`
+        );
+        res.status(200).json(interests.map((interest) => interest.service));
+    } catch (error) {
+        console.error('Error listing interested services', error);
+        res.status(500).json({
+            message: 'Internal server error',
+            error: error.message,
+        });
+    }
+};
+
 module.exports = {
     createVendor,
     getVendorDetails,
     placeBid,
     listBidsByVendor,
+    expressInterest,
+    listInterestedServices,
     getServicesFeed,
 };

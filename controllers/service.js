@@ -90,12 +90,38 @@ const getServiceById = async (req, res) => {
     }
 };
 
-// params : issuer id
-// response : all service created by issuer
+const getAllLiveServices = async (req, res) => {
+    try {
+        const now = new Date();
+        const today = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate()
+        );
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const services = await prisma.service.findMany({
+            where: {
+                biddingDate: {
+                    gte: today,
+                    lt: tomorrow,
+                },
+            },
+        });
+
+        res.status(200).json({
+            services,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Internal server error',
+            error: error.message,
+        });
+    }
+};
 
 const getAllServicesByIssuer = async (req, res) => {
-    // Simulate fetching issuer details
-    // const issuerId = req.params.id;
     const issuerId = req.body.userId;
 
     try {
@@ -120,5 +146,6 @@ module.exports = {
     createService,
     getAllServices,
     getServiceById,
+    getAllLiveServices,
     getAllServicesByIssuer,
 };

@@ -4,6 +4,8 @@ const {
     createVendor,
     getVendorDetails,
     placeBid,
+    expressInterest,
+    listInterestedServices,
     listBidsByVendor,
     getServicesFeed,
 } = require('../controllers/vendorController');
@@ -20,6 +22,12 @@ router.post('/', createVendor);
 
 // Get vendor profile details
 router.get('/', getVendorDetails);
+
+// Express interest in a service
+router.post('/interest', expressInterest);
+
+// List all services a vendor has expressed interest in
+router.get('/interests', listInterestedServices);
 
 // Place a bid on a service
 router.post('/bids', placeBid);
