@@ -146,13 +146,16 @@ const getLowestBidForService = async (req, res) => {
     const { serviceId } = req.params;
 
     try {
-        // Fetch the lowest bid for the given service
+        // Fetch the lowest bid for the given service, including vendor details
         const lowestBid = await prisma.bid.findFirst({
             where: {
                 serviceId: serviceId,
             },
             orderBy: {
-                amount: 'asc',
+                amount: 'asc', // Order by bid amount in ascending order to get the lowest bid
+            },
+            include: {
+                vendor: true, // Include the vendor details in the response
             },
         });
 
