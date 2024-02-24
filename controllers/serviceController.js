@@ -142,10 +142,38 @@ const getAllServicesByIssuer = async (req, res) => {
     }
 };
 
+const getLowestBidForService = async (req, res) => {
+    const { serviceId } = req.params; // Assuming serviceId is passed as a URL parameter
+
+    try {
+        // Fetch the lowest bid for the given service
+        const lowestBid = await prisma.bid.findFirst({
+            where: {
+                serviceId: serviceId,
+            },
+            orderBy: {
+                amount: 'asc', // Order by bid amount in ascending order to get the lowest bid
+            },
+        });
+
+        if (!lowestBid) {
+            return res
+                .status(404)
+                .json({ message: 'No bids found for this service' });
+        }
+
+        res.status(200).json(lowestBid);
+    } catch (error) {
+        console.error('Failed to fetch the lowest bid for service:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 module.exports = {
     createService,
     getAllServices,
     getServiceById,
     getAllLiveServices,
+    getLowestBidForService,
     getAllServicesByIssuer,
 };
