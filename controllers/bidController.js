@@ -93,9 +93,29 @@ const deleteBid = async (req, res) => {
     }
 };
 
+const listBidsByService = async (req, res) => {
+    const { serviceId } = req.params;
+
+    try {
+        const bids = await prisma.bid.findMany({
+            where: { serviceId },
+            orderBy: {
+                amount: 'asc',
+            },
+        });
+        res.status(200).json(bids);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error retrieving bids',
+            error: error.message,
+        });
+    }
+};
+
 module.exports = {
     placeBid,
     listBidsByVendor,
+    listBidsByService,
     getBidDetails,
     updateBid,
     deleteBid,

@@ -143,7 +143,7 @@ const getAllServicesByIssuer = async (req, res) => {
 };
 
 const getLowestBidForService = async (req, res) => {
-    const { serviceId } = req.params; // Assuming serviceId is passed as a URL parameter
+    const { serviceId } = req.params;
 
     try {
         // Fetch the lowest bid for the given service
@@ -152,7 +152,7 @@ const getLowestBidForService = async (req, res) => {
                 serviceId: serviceId,
             },
             orderBy: {
-                amount: 'asc', // Order by bid amount in ascending order to get the lowest bid
+                amount: 'asc',
             },
         });
 

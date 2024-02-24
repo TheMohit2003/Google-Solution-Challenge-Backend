@@ -3,6 +3,7 @@ const router = express.Router();
 const {
     placeBid,
     listBidsByVendor,
+    listBidsByService,
     getBidDetails,
     updateBid,
     deleteBid,
@@ -13,6 +14,9 @@ router.post('/', placeBid);
 
 // List all bids made by a specific vendor
 router.get('/vendor/:vendorId', listBidsByVendor);
+
+// List of all bids for a specific service
+router.get('/service/:serviceId', listBidsByService);
 
 // Get details of a specific bid
 router.get('/:bidId', getBidDetails);
