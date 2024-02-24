@@ -13,7 +13,7 @@ router.post('/createService', createService);
 
 router.get('/getAllServices', getAllServices);
 
-router.get('getAllLiveServices', getAllLiveServices);
+router.get('/getAllLiveServices', getAllLiveServices);
 
 router.get('/getServiceById/:id', getServiceById);
 
