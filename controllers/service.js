@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 const createService = async (req, res) => {
     const userId = req.body.userId;
-    console.log(`userId at createService: ${userId}`);
+
     const {
         title,
         description,
@@ -12,36 +12,23 @@ const createService = async (req, res) => {
         biddingDate,
         projectStartDate,
     } = req.body;
-    let filePath = req.file ? req.file.path : null;
+
     try {
-        const user = await prisma.user.findUnique({
-            where: { id: userId },
-        });
+        const serviceData = {
+            title,
+            description,
+            amount: parseInt(amount, 10),
+            location,
+            biddingDate: new Date(biddingDate),
+            projectStartDate: new Date(projectStartDate),
+            issuerId: userId,
+        };
 
-        if (!user || user.role !== 'ISSUER') {
-            return res.status(403).json({
-                message: 'Forbidden - Only issuers can create services',
-            });
-        }
+        const service = await prisma.service.create({ data: serviceData });
 
-        const service = await prisma.service.create({
-            data: {
-                title,
-                description,
-                amount,
-                location,
-                biddingDate: new Date(biddingDate),
-                projectStartDate: new Date(projectStartDate),
-                issuerId: userId,
-                status: 'OPEN',
-                filePath,
-            },
-        });
-
-        res.status(201).json({
-            service,
-        });
+        res.status(201).json({ service });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             message: 'Internal server error',
             error: error.message,
