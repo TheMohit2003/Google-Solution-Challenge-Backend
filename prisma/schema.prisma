@@ -53,7 +53,7 @@ model Issuer {
 }
 
 model Vendor {
-  userId           String   @id
+  userId           String           @id
   name             String
   officeAddress    String
   contact          Int
@@ -61,14 +61,25 @@ model Vendor {
   GST              Int
   OrganizationName String
   WorkDescription  String
-  Occupation       String   @default("Service Provider")
-  createdAt        DateTime @default(now())
+  Occupation       String           @default("Service Provider")
+  createdAt        DateTime         @default(now())
   bids             Bid[]
-  user             User     @relation(fields: [userId], references: [id])
+  user             User             @relation(fields: [userId], references: [id])
+  VendorInterest   VendorInterest[]
+}
+
+model VendorInterest {
+  id        String   @id @default(uuid())
+  vendorId  String
+  serviceId String
+  createdAt DateTime @default(now())
+
+  vendor  Vendor  @relation(fields: [vendorId], references: [userId])
+  service Service @relation(fields: [serviceId], references: [id])
 }
 
 model Service {
-  id               String        @id @default(uuid())
+  id               String           @id @default(uuid())
   issuerId         String
   title            String
   amount           Int
@@ -76,10 +87,11 @@ model Service {
   biddingDate      DateTime
   projectStartDate DateTime
   description      String
-  status           ServiceStatus @default(OPEN)
-  createdAt        DateTime      @default(now())
+  status           ServiceStatus    @default(OPEN)
+  createdAt        DateTime         @default(now())
   bids             Bid[]
-  issuer           Issuer        @relation(fields: [issuerId], references: [userId])
+  issuer           Issuer           @relation(fields: [issuerId], references: [userId])
+  VendorInterest   VendorInterest[]
 }
 
 model Bid {
