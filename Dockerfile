@@ -7,6 +7,8 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN npm install
+# Add this line to generate Prisma client
+RUN npx prisma generate
 
 COPY . .
 
