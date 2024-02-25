@@ -1,0 +1,116 @@
+openapi: 3.0.0
+info:
+    title: Your Application API
+    description: API documentation for the application.
+    version: '1.0.0'
+servers:
+    - url: http://localhost:3000/
+paths:
+    /auth/register:
+        post:
+            summary: Register a new user
+            tags:
+                - Authentication
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                password:
+                                    type: string
+                                role:
+                                    type: string
+                                    enum: [ISSUER, VENDOR]
+            responses:
+                '201':
+                    description: User registered successfully
+                '400':
+                    description: Invalid input data
+    /auth/login:
+        post:
+            summary: Authenticate user and return token
+            tags:
+                - Authentication
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                password:
+                                    type: string
+                                role:
+                                    type: string
+                                    enum: [ISSUER, VENDOR]
+            responses:
+                '200':
+                    description: Login successful
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    token:
+                                        type: string
+                '400':
+                    description: Invalid credentials
+    /service/createService:
+        post:
+            summary: Create a new service
+            tags:
+                - Services
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                title:
+                                    type: string
+                                description:
+                                    type: string
+                                amount:
+                                    type: integer
+                                location:
+                                    type: string
+                                biddingDate:
+                                    type: string
+                                    format: date
+                                projectStartDate:
+                                    type: string
+                                    format: date
+                                file:
+                                    type: string
+                                    format: binary
+            responses:
+                '201':
+                    description: Service created successfully
+                '400':
+                    description: Invalid input data
+    /vendor/interest:
+        post:
+            summary: Express interest in a service
+            tags:
+                - Interests
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                serviceId:
+                                    type: string
+            responses:
+                '201':
+                    description: Interest expressed successfully
+                '409':
+                    description: Interest already expressed
