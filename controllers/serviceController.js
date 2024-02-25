@@ -121,6 +121,42 @@ const getAllLiveServices = async (req, res) => {
     }
 };
 
+const getAllLiveServicesByIssuer = async (req, res) => {
+    const issuerId = req.body.userId;
+
+    try {
+        const now = new Date();
+        const today = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate()
+        );
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const services = await prisma.service.findMany({
+            where: {
+                issuerId: issuerId,
+                biddingDate: {
+                    gte: today,
+                    lt: tomorrow,
+                },
+            },
+        });
+
+        if (services) {
+            res.status(200).json(services);
+        } else {
+            res.status(404).json({ message: 'Service not found' });
+        }
+    } catch (error) {
+        res.status(400).json({
+            message: 'Error fetching service details',
+            error,
+        });
+    }
+};
+
 const getAllServicesByIssuer = async (req, res) => {
     const issuerId = req.body.userId;
 
@@ -176,6 +212,7 @@ module.exports = {
     getAllServices,
     getServiceById,
     getAllLiveServices,
+    getAllLiveServicesByIssuer,
     getLowestBidForService,
     getAllServicesByIssuer,
 };

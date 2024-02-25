@@ -6,6 +6,7 @@ const {
     getAllServices,
     getServiceById,
     getAllLiveServices,
+    getAllLiveServicesByIssuer,
     getLowestBidForService,
     getAllServicesByIssuer,
 } = require('../controllers/serviceController');
@@ -15,6 +16,8 @@ router.post('/createService', createService);
 router.get('/getAllServices', getAllServices);
 
 router.get('/getAllLiveServices', getAllLiveServices);
+
+router.get('/getAllLiveServicesByIssuer', getAllLiveServicesByIssuer);
 
 router.get('/getServiceById/:id', getServiceById);
 
